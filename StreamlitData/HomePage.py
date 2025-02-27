@@ -11,9 +11,9 @@ options=st.sidebar.radio('Select:',['HomePage','Capturing_Oneliner','Report_DRO'
 def HomePage():
     st.switch_page(page='HomePage.py')
 def Capturing_Oneliner():
-    st.switch_page(page='StreamlitData/Capturing_Oneliner.py')
+    st.switch_page(page='Capturing_Oneliner.py')
 def Report_DRO():
-    st.switch_page(page='StreamlitData/Report_DRO.py')
+    st.switch_page(page='Report_DRO.py')
 
 #Navigation Option
 if options== 'HomePage':
