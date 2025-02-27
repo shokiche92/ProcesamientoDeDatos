@@ -7,6 +7,7 @@ st.title('Oficina Chile & Perú')
 
 st.subheader("Procesamiento de datos - Cierre Financiero 2025")
 options=st.sidebar.radio('Select:',['HomePage','Capturing_Oneliner','Report_DRO'])
+
 def HomePage():
     st.switch_page(page='HomePage.py')
 def Capturing_Oneliner():
@@ -15,10 +16,11 @@ def Report_DRO():
     st.switch_page(page='StreamlitData/Report_DRO.py')
 
 #Navigation Option
-if options== 'Home':
+if options== 'HomePage':
     HomePage()
-elif options=='Chile':
+elif options=='Capturing_Oneliner':
     Capturing_Oneliner()
-elif options=='Peru' :
+elif options=='Report_DRO' :
     Report_DRO()
     
+
