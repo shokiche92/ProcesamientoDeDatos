@@ -1,4 +1,3 @@
-@st.cache 
 import pandas as pd
 import sqlalchemy as sa
 import pyodbc
