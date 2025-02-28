@@ -1,3 +1,4 @@
+st.experimental_memo
 import pandas as pd
 import sqlalchemy as sa
 import pyodbc
