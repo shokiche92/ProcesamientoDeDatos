@@ -174,29 +174,6 @@ def main():
                 df=pd.DataFrame()
             st.dataframe(df)
 
-#def cargar_file():
-def main2():
-    st.set_page_config(page_title='Multipage App')
-    st.title('Main Page')
-    st.sidebar.success('Select apage above')
-    st.sidebar.title('Testing')
-    options=st.sidebar.radio('Select:',['Home','Chile','Peru'])
-    #Navigation Option
-    if options== 'Home':
-        home()
-    elif options=='Chile':
-        ACL()
-    elif options=='Peru' :
-        APE()
-    
-
-def home():
-    st.header('Welcome')
-def ACL():
-    st.header('Chile')
-def APE():
-    st.header('Peru')
-
 
 
 if __name__== '__main__':
