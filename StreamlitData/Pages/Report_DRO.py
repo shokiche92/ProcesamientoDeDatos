@@ -65,7 +65,7 @@ def main():
                 progress_bar.progress(100)
                 st.success("Data successfully uploaded to Sql:")
                 time.sleep(1)
-                st.switch_page(page='HomePage.py')
+                st.switch_page(page='Streamlit_app.py')
 
 def CleaningDataDRO_ACL(DF,DF_WIP,FechaAcargar):
     FechaAcargar2=FechaAcargar.strftime("%Y-%m")
