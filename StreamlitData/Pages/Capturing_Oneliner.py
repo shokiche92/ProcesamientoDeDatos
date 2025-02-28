@@ -1,4 +1,4 @@
-st.experimental_singleton
+
 import streamlit as st
 import pandas as  pd
 import numpy as np
@@ -11,7 +11,7 @@ import time
 
 today = date.today()
 
-
+st.experimental_singleton
 #st.set_page_config(page_title="Capturing Data Oneliner",layout="wide")
 
 def fecha_a_usar(fecha):
