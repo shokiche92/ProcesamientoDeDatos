@@ -80,7 +80,7 @@ def CleaningDataAPE(df,FechaAcargar,eleccion):
     df.columns = [str(col).replace('+','More') for col in df.columns]
     filas=len(df)
     df.rename(columns=Columns_Rename,inplace=True)
-    print(df)
+   
     df['Nombre_Proyecto']=df['Nombre_Proyecto'].str.strip()
     df['BIDataPosition']=pd.to_datetime(FechaAcargar).strftime("%Y-%m-01")
     df['Country']=str(eleccion)
@@ -146,7 +146,7 @@ def main():
                     progress_bar.progress(100)
                     st.success("Data successfully uploaded to Sql:")
                     time.sleep(2)
-                    st.switch_page(page='HomePage.py')
+                    st.switch_page(page='Streamlit_app.py')
 
     if eleccion =="APE":
         st.subheader("Arcadis Perú")
@@ -168,11 +168,10 @@ def main():
                 progress_bar.progress(100)
                 st.success("Data successfully uploaded to Sql:")
                 time.sleep(2)
-                st.switch_page(page='HomePage.py')
+                st.switch_page(page='Streamlit_app.py')
 
             else:
                 df=pd.DataFrame()
-            st.dataframe(df)
 
 
 
