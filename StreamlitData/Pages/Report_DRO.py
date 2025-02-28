@@ -7,7 +7,7 @@ from datetime import date,datetime
 from dateutil.relativedelta import relativedelta
 import streamlit as st
 import time
-st.experimental_memo
+
 
 today = date.today()
 def fecha_a_usar(fecha):
