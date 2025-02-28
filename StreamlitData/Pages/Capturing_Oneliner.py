@@ -80,7 +80,7 @@ def CleaningDataAPE(df,FechaAcargar,eleccion):
     df.columns = [str(col).replace('+','More') for col in df.columns]
     filas=len(df)
     df.rename(columns=Columns_Rename,inplace=True)
-   
+    
     df['Nombre_Proyecto']=df['Nombre_Proyecto'].str.strip()
     df['BIDataPosition']=pd.to_datetime(FechaAcargar).strftime("%Y-%m-01")
     df['Country']=str(eleccion)
@@ -116,51 +116,30 @@ def CleaningDataAPE(df,FechaAcargar,eleccion):
     df['ProjectNo']=df['PY'].astype(int)
     return df
  
-def main():
-    st.title("Proceso de carga de datos")
-    menu=["ACL","APE"]
-    eleccion=st.sidebar.selectbox("Menú",menu)
-    engine= create_db_engine()  
-    d = st.date_input("Date Period", value=today)
-    st.write("Period of the data load:", d.strftime("%Y/%m"))
-    FechaAcargar,MesAnterior=fecha_a_usar(d)
-    if eleccion =="ACL":
-        st.subheader("Arcadis Chile")
-        archivo_datos=st.file_uploader("Subir Excel",type=['xlsx'])
-        if archivo_datos is not None:
-            detalles_archivo={"nombre_archvio": archivo_datos.name,"tipo_archivo":archivo_datos.type,"tamaño_archivo":archivo_datos.size}
-            #st.write(detalles_archivo)
-            
-            if detalles_archivo['tipo_archivo']=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-                df=pd.read_excel(archivo_datos,sheet_name='Oneliner',header=7)
-                df = df.dropna(subset='PY')
-                st.write(df)
+#def main():
+st.title("Proceso de carga de datos")
+menu=["ACL","APE"]
+eleccion=st.sidebar.selectbox("Menú",menu)
+engine= create_db_engine()  
+d = st.date_input("Date Period", value=today)
+st.write("Period of the data load:", d.strftime("%Y/%m"))
+FechaAcargar,MesAnterior=fecha_a_usar(d)
 
-                if st.button("Upload to SQL"):
-                    df=CleaningDataACL(df,FechaAcargar,eleccion)
-                
-                    # Create progress bar
-                    progress_bar = st.progress(0)
-                    df.to_sql("FinanceOneliner", engine, index=False, if_exists="append", schema="dbo")
-                    #st.switch_page(page='HomePage.py')
-                    progress_bar.progress(100)
-                    st.success("Data successfully uploaded to Sql:")
-                    time.sleep(2)
-                    st.switch_page(page='Streamlit_app.py')
+if eleccion =="ACL":
+    st.subheader("Arcadis Chile")
+    archivo_datos=st.file_uploader("Subir Excel",type=['xlsx'])
+    if archivo_datos is not None:
+        detalles_archivo={"nombre_archvio": archivo_datos.name,"tipo_archivo":archivo_datos.type,"tamaño_archivo":archivo_datos.size}
+        #st.write(detalles_archivo)
+        
+        if detalles_archivo['tipo_archivo']=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            df=pd.read_excel(archivo_datos,sheet_name='Oneliner',header=7)
+            df = df.dropna(subset='PY')
+            st.write(df)
 
-    if eleccion =="APE":
-        st.subheader("Arcadis Perú")
-        archivo_datos=st.file_uploader("Subir Excel",type=['xlsx'])
-        if archivo_datos is not None:
-            detalles_archivo={"nombre_archvio": archivo_datos.name,"tipo_archivo":archivo_datos.type,"tamaño_archivo":archivo_datos.size}
-            st.write(detalles_archivo)
+            if st.button("Upload to SQL"):
+                df=CleaningDataACL(df,FechaAcargar,eleccion)
             
-            if detalles_archivo['tipo_archivo']=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-                df=pd.read_excel(archivo_datos,sheet_name='Oneliner',header=7)
-                df = df.dropna(subset='PY')
-                st.button("Upload to SQL")  
-                df=CleaningDataAPE(df,FechaAcargar,eleccion)
-                
                 # Create progress bar
                 progress_bar = st.progress(0)
                 df.to_sql("FinanceOneliner", engine, index=False, if_exists="append", schema="dbo")
@@ -168,14 +147,37 @@ def main():
                 progress_bar.progress(100)
                 st.success("Data successfully uploaded to Sql:")
                 time.sleep(2)
-                st.switch_page(page='Streamlit_app.py')
+                st.switch_page(page='Pages/AboutProject.py')
 
-            else:
-                df=pd.DataFrame()
+if eleccion =="APE":
+    st.subheader("Arcadis Perú")
+    archivo_datos=st.file_uploader("Subir Excel",type=['xlsx'])
+    if archivo_datos is not None:
+        detalles_archivo={"nombre_archvio": archivo_datos.name,"tipo_archivo":archivo_datos.type,"tamaño_archivo":archivo_datos.size}
+        #st.write(detalles_archivo)
+        
+        if detalles_archivo['tipo_archivo']=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+            df=pd.read_excel(archivo_datos,sheet_name='Oneliner',header=7)
+            df = df.dropna(subset='PY')
+            st.write(df)
+            if st.button("Upload to SQL"):
+                df=CleaningDataAPE(df,FechaAcargar,eleccion)  
+                # Create progress bar
+                progress_bar = st.progress(0)
+                df.to_sql("FinanceOneliner", engine, index=False, if_exists="append", schema="dbo")
+                #st.switch_page(page='HomePage.py')
+                progress_bar.progress(100)
+                st.success("Data successfully uploaded to Sql:")
+                time.sleep(2)
+                st.switch_page(page='Pages/AboutProject.py')
+
+        else:
+            df=pd.DataFrame()
 
 
 
-if __name__== '__main__':
-    main()
+#if __name__== '__main__':
+#    main()
+
 
 
