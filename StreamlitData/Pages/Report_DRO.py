@@ -35,39 +35,9 @@ def create_db_engine():
 Country='ACL'
 
 
-def main():
-    st.title("Procesamiento de Datos DRO")
-    engine= create_db_engine()  
-    d = st.date_input("Date Period", value=today)
-    st.write("Period of the data load:", d.strftime("%Y/%m"))
-    FechaAcargar,MesAnterior=fecha_a_usar(d)
-    st.subheader("Arcadis Chile")
-    archivo_datos=st.file_uploader("Subir Excel",type=['xlsx'])
-
-    if archivo_datos is not None:
-        detalles_archivo={"nombre_archvio": archivo_datos.name,"tipo_archivo":archivo_datos.type,"tamaño_archivo":archivo_datos.size}
-        if detalles_archivo['tipo_archivo']=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
-            DF= pd.read_excel(archivo_datos,sheet_name='Facturacion Pendiente',header=2)
-            DF_WIP= pd.read_excel(archivo_datos,sheet_name='Antigüedad-IngDevengados',header=5)
-            st.subheader('Facturacion Pendiente')
-            st.write(DF)
-            st.subheader('Antigüedad-IngDevengados')
-            st.write(DF_WIP)
-            if st.button("Upload to SQL"):
-                T1,DF_WIP=CleaningDataDRO_ACL(DF,DF_WIP,FechaAcargar)
-                # Create progress bar
-                progress_bar = st.progress(0)
-                # To SQL
-                T1.to_sql("Finance_AccountsReceivable", engine, index=False, if_exists="append", schema="dbo")
-                DF_WIP.to_sql("Finance_WIP", engine, index=False, if_exists="append", schema="dbo")
-                # End To SQL
-                #st.switch_page(page='HomePage.py')
-                progress_bar.progress(100)
-                st.success("Data successfully uploaded to Sql:")
-                time.sleep(1)
-                st.switch_page(page='Streamlit_app.py')
 
 def CleaningDataDRO_ACL(DF,DF_WIP,FechaAcargar):
+    
     FechaAcargar2=FechaAcargar.strftime("%Y-%m")
     print(FechaAcargar2)
     DF=DF[['Periodo','Proy.','Descrp','Antigüedad_Elv.','Emisión','Cliente','Total','JP']]
@@ -125,6 +95,40 @@ def CleaningDataDRO_ACL(DF,DF_WIP,FechaAcargar):
     return T1,DF_WIP
     # End work WIP
 
-if __name__== '__main__':
-    main()
+#def main():
+st.title("Procesamiento de Datos DRO")
+engine= create_db_engine()  
+d = st.date_input("Date Period", value=today)
+st.write("Period of the data load:", d.strftime("%Y/%m"))
+FechaAcargar,MesAnterior=fecha_a_usar(d)
+st.subheader("Arcadis Chile")
+archivo_datos=st.file_uploader("Subir Excel",type=['xlsx'])
+
+if archivo_datos is not None:
+    detalles_archivo={"nombre_archvio": archivo_datos.name,"tipo_archivo":archivo_datos.type,"tamaño_archivo":archivo_datos.size}
+    if detalles_archivo['tipo_archivo']=='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
+        DF= pd.read_excel(archivo_datos,sheet_name='Facturacion Pendiente',header=2)
+        DF_WIP= pd.read_excel(archivo_datos,sheet_name='Antigüedad-IngDevengados',header=5)
+        st.subheader('Facturacion Pendiente')
+        st.write(DF)
+        st.subheader('Antigüedad-IngDevengados')
+        st.write(DF_WIP)
+        if st.button("Upload to SQL"):
+            T1,DF_WIP=CleaningDataDRO_ACL(DF,DF_WIP,FechaAcargar)
+            # Create progress bar
+            progress_bar = st.progress(0)
+            # To SQL
+            T1.to_sql("Finance_AccountsReceivable", engine, index=False, if_exists="append", schema="dbo")
+            DF_WIP.to_sql("Finance_WIP", engine, index=False, if_exists="append", schema="dbo")
+            # End To SQL
+            #st.switch_page(page='HomePage.py')
+            progress_bar.progress(100)
+            st.success("Data successfully uploaded to Sql:")
+            time.sleep(1)
+            st.switch_page(page='Pages/AboutProject.py')
+
+
+#if __name__== '__main__':
+#    main()
+
 
