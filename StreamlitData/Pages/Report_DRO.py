@@ -1,4 +1,4 @@
-st.experimental_memo
+
 import pandas as pd
 import sqlalchemy as sa
 import pyodbc
@@ -7,7 +7,7 @@ from datetime import date,datetime
 from dateutil.relativedelta import relativedelta
 import streamlit as st
 import time
-
+st.experimental_memo
 
 today = date.today()
 def fecha_a_usar(fecha):
